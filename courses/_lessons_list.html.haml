@@ -1,0 +1,21 @@
+.course-page-lessons-list
+  .course-page-lessons-list-title
+    = "#{translated_content('label_lessons').capitalize}:"
+  - if lesson_plans.present?
+    - lesson_ctr = 0
+    - lesson_plans.each do |lesson|
+      - lesson_ctr = lesson_ctr + 1
+      .course-page-lesson{class: "#{cycle('even', 'odd')}"}
+        .lesson-left
+          %span.lesson-listnumber
+            = "##{lesson_ctr}"
+          .lesson-image
+            = image_tag(lesson.lesson_plan.photo, class: 'img-responsive')
+          %span.lesson-title
+            = lesson.lesson_plan.name
+          .lesson-tag
+            = lesson.course.course_category.name
+        .lesson-level
+          = course_difficulty_image(lesson.lesson_plan.lesson_difficulty)
+  - else
+    = translated_content('label_no_lessons')

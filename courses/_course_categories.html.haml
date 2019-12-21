@@ -1,0 +1,9 @@
+.courses-categories-row
+  - if @course_categories.present?
+    - @course_categories.each do |category|
+      .courses-category
+        .courses-category-image
+          = link_to(image_tag(category.photo, class: 'img-responsive'), course_category_details_path(category.id), remote: true)
+        = link_to(category.name, course_category_details_path(category.id), remote: true, class: 'course-link')
+  - else
+    = translated_content('label_no_categories')

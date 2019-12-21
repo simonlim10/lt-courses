@@ -1,0 +1,19 @@
+- if user_signed_in?
+  - if current_user.subscribed?
+    .btn.-red.-full.-large.custom-button{disabled: true}
+      = translated_content('label_already_subscribed')
+  - else
+    .btn.-red.-full.-large.custom-button.checkout-this-course
+      .checkout-url.hidden= checkout_subscriptions_path()
+      .product-id.hidden= product.id
+      .product-period.hidden= period
+      .product-level.hidden= level
+      .product-course-id.hidden= course_id
+      .popup-button= translated_content('label_get_this_course')
+- else
+  .btn.-red.-full.-large.custom-button.sign-in-this-course
+    .product-id.hidden= product.id
+    .product-period.hidden= period
+    .product-level.hidden= level
+    .product-course-id.hidden= course_id
+    .popup-button= translated_content('label_get_this_course')

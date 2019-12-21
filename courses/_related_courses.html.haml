@@ -1,0 +1,20 @@
+- courses.each do |course|
+  - current_class = (current_course == course) ? 'selected' : 'odd'
+  .course-button-spacing{class: "#{current_class}"}
+    %a.course-button{:href => "#{course_details_path(course.id)}"}
+      .course-image
+        = image_tag(course.photo, class: 'img-responsive')
+      .course-details
+        .course-header
+          .course-title
+            = course.name
+          .course-level
+            = course_difficulty_image(course.difficulty)
+        .course-extras
+          .course-numbers
+            = course.no_of_lessons
+            = translated_content('label_lessons').capitalize
+            .course-price
+              = number_to_currency(params[:locale].eql?('vi') ? course.price * 22000 : course.price, unit: params[:locale].eql?('es') ? '€': params[:locale].eql?('vi') ? '₫':'$', precision: 0, format: params[:locale].eql?('vi') ? "%n%u":"%u%n")
+          .course-link
+            = translated_content('label_details').capitalize

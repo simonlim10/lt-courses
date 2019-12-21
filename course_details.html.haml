@@ -1,0 +1,47 @@
+- content_for(:site_meta) do
+  %title
+    = @page_meta.try(:title).presence || (default_site_name + ' ' + t(:course) + '|' + @course.try(:name).presence || default_meta_title)
+  %meta{:content => "#{@page_meta.try(:description).presence || (default_site_name + ' ' + t(:course) + ' - ' + (@course.try(:description).presence || default_meta_description))}", :name => "description"}/
+  = render partial: 'shared/head/hreflang', locals: {href_proc: proc { |l| course_details_url(@course, locale: l)}}
+
+- background_image = @course.course_category.background_image.url.presence
+.mb50
+.section-features
+  .course-page-header{style: "background: #f0f0f2 url(#{background_image}) no-repeat right center /cover;"}
+    .course-page-header-container
+      .course-header-card
+        .course-image
+          = image_tag(@course.photo, class: 'img-responsive')
+        .course-details
+          .course-header
+            %h1.course-title
+              = @course.name
+          .course-extras
+            .course-numbers
+              = "#{@course.no_of_lessons} #{translated_content('label_lessons')}"
+              .course-price
+                = number_to_currency(params[:locale].eql?('vi') ? @course.price * 22000 : @course.price, unit: params[:locale].eql?('es') ? '€': params[:locale].eql?('vi') ? '₫':'$', precision: 0, format: params[:locale].eql?('vi') ? "%n%u":"%u%n")
+            .course-level
+              = translated_content('label_level')
+              = course_difficulty_image(@course.difficulty)
+
+  .course-page-container.main-container
+    .course-page-content
+      .course-page-introduction
+        = render(partial: 'pages/courses/course_inclusions', locals: { course: @course, course_inclusions: @course_inclusions })
+
+    .course-page-sidebar
+      = render(partial: 'pages/courses/purchase_summary', locals: { course: @course, product: @product })
+
+  .course-page-container
+    = render(partial: 'pages/courses/lessons_list', locals: { lesson_plans: @course.course_lesson_plans.ordered })
+
+  .course-page-container.related-courses-container
+    .course-page-related-courses-title= translated_content('label_other_courses')
+    .course-category-dropdown
+      = hidden_field_tag 'course_id', @course.id
+      = select_tag :course_category_id, options_from_collection_for_select(@course_categories, 'id', 'name', @course.course_category_id),
+        { include_blank: false, class: 'text-group form-control', id: 'course-category-selector', tabindex: '4'}
+
+    #related-courses.course-page-related-courses
+      = render(partial: 'pages/courses/related_courses', locals: { courses: @related_courses, current_course: @course })

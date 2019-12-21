@@ -1,0 +1,2 @@
+$('#selected-category').html("#{j render(partial: 'pages/courses/selected_category', locals: { course_category: course_category })}")
+$('#course-list').html("#{j render(partial: 'pages/courses/list', locals: { courses: courses, is_category_selected: is_category_selected })}")

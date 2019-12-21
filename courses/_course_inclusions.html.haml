@@ -1,0 +1,9 @@
+.course-page-introduction-header
+  = translated_content('label_whats_inside') if course.course_inclusions.any?
+.course-page-inclusions
+  - course_inclusions.each do |inclusion|
+    .course-page-inclusions-item 
+      = image_tag '/images/courses/bullet-check.svg'
+      = inclusion&.name
+.course-page-description
+  = course.description

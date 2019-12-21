@@ -1,0 +1,9 @@
+- course_category = course_category.presence || @course_categories.first
+- if course_category.present?
+  #selected-category
+    .courses-selected-category
+      .courses-selected-category-header
+        = image_tag(course_category.photo, class: 'img-responsive')
+        = course_category.name
+      .courses-selected-category-description
+        = course_category.description

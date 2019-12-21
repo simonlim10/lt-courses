@@ -1,0 +1,23 @@
+.course-purchase-summary
+  = translated_content('label_course_summary')
+  .course-card-simple
+    .course-image
+      = image_tag(course.photo, class: 'img-responsive')
+    .course-title
+      = course.name
+
+  .course-vital-information
+    .course-lesson-count
+      .number
+        = course.no_of_lessons
+      = translated_content('label_lessons').capitalize
+    .course-price-count
+      .number
+        = number_to_currency(params[:locale].eql?('vi') ? course.price * 22000 : course.price, unit: params[:locale].eql?('es') ? '€': params[:locale].eql?('vi') ? '₫':'$', precision: 0, format: params[:locale].eql?('vi') ? "%n%u":"%u%n")
+      = translated_content('label_total_price')
+
+  - if current_user && (current_user.subscription && current_user.subscription.course_id.present?)
+    .btn.-red.-full.-large.custom-button{disabled: true}
+      = translated_content('label_already_subscribed')
+  - else
+    = render(partial: 'pages/courses/purchase_summary_button', locals: { product: product, period: nil, level: 'lt', course_id: course.id })
